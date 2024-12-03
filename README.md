@@ -83,12 +83,12 @@ int main(void)
 ```
 
 ```bash
-gcc main.c ft_printf.a -o ft_printf
+gcc main.c libftprintf.a -o ft_printf
 ```
 
 ## 🚀 Details
 
-ft_printf utilizes `va_list` from standard library. Following `specifiers` are handled.
+Function utilizes `va_list` from standard library. Following `specifiers` are handled.
 
 | **Specifier** | **Description**                                                                 |
 |---------------|---------------------------------------------------------------------------------|
