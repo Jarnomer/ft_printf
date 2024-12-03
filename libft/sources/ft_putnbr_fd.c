@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <libft.h>
 
-static long	st_get_div(long n)
+static long	st_get_devider(long n)
 {
 	long	div;
 	int		i;
@@ -43,7 +43,7 @@ int	ft_putnbr_fd(long n, int fd)
 			return (-1);
 		len++;
 	}
-	div = st_get_div(n);
+	div = st_get_devider(n);
 	while (div != 0)
 	{
 		if (ft_putchar_fd(n / div + '0', fd) == -1)

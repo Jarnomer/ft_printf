@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/08 15:35:53 by jmertane          #+#    #+#             */
-/*   Updated: 2023/11/26 11:04:29 by jmertane         ###   ########.fr       */
+/*   Created: 2023/10/24 14:12:25 by jmertane          #+#    #+#             */
+/*   Updated: 2024/02/08 16:53:16 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef LIBFT_H
+# define LIBFT_H
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
-{
-	if (dst <= src)
-		ft_memcpy(dst, src, len);
-	else
-		while (len-- != 0 && (dst || src))
-			*(char *)(dst + len) = *(char *)(src + len);
-	return (dst);
-}
+# include <stdlib.h>
+# include <unistd.h>
+
+int		ft_putchar_fd(char c, int fd);
+int		ft_putstr_fd(char *s, int fd);
+int		ft_putendl_fd(char *s, int fd);
+int		ft_putnbr_fd(long n, int fd);
+
+char	*ft_strchr(const char *s, int c);
+size_t	ft_strlen(const char *s);
+
+#endif

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/08 15:32:49 by jmertane          #+#    #+#             */
-/*   Updated: 2023/11/08 15:33:06 by jmertane         ###   ########.fr       */
+/*   Created: 2023/11/08 16:34:03 by jmertane          #+#    #+#             */
+/*   Updated: 2024/02/06 23:36:07 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <libft.h>
 
-void	ft_bzero(void *s, size_t n)
+int	ft_putstr_fd(char *s, int fd)
 {
-	ft_memset(s, 0, n);
+	return (write(fd, s, ft_strlen(s)));
 }

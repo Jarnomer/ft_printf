@@ -10,60 +10,123 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME	=	libft.a
+# **************************************************************************** #
+#    VARIABLES
+# **************************************************************************** #
 
-RM		=	rm -rf
-AR		=	ar -rcs
-CFLAGS	=	-Wall -Werror -Wextra
+NAME := libft.a
 
-SRCS 	= 	ft_isalpha.c \
-			ft_isdigit.c \
-			ft_isalnum.c \
-			ft_isascii.c \
-			ft_isprint.c \
-			ft_bzero.c \
-			ft_calloc.c \
-			ft_memset.c \
-			ft_memcpy.c \
-			ft_memmove.c \
-			ft_memchr.c \
-			ft_memcmp.c \
+SOURCEDIR := sources
+HEADERDIR := include
+BUILDDIR  := build
+BUILDLOG  := build.log
+
+# **************************************************************************** #
+#    COMMANDS
+# **************************************************************************** #
+
+RM   := rm -rf
+AR   := ar -rcs
+
+# **************************************************************************** #
+#    COMPILATION
+# **************************************************************************** #
+
+CC        := cc
+CFLAGS    := -Wall -Werror -Wextra
+CPPFLAGS  := -c -MMD -MP
+MAKEFLAGS += --no-print-directory -j4
+
+# **************************************************************************** #
+#    SOURCES
+# **************************************************************************** #
+
+SOURCES :=	ft_strlen.c \
 			ft_putchar_fd.c \
 			ft_putstr_fd.c \
 			ft_putendl_fd.c \
-			ft_putnbr_fd.c \
-			ft_strlen.c \
-			ft_strlcpy.c \
-			ft_strlcat.c \
-			ft_strchr.c \
-			ft_strrchr.c \
-			ft_strncmp.c \
-			ft_strnstr.c \
-			ft_strdup.c \
-			ft_substr.c \
-			ft_strjoin.c \
-			ft_strtrim.c \
-			ft_split.c \
-			ft_atoi.c \
-			ft_itoa.c \
-			ft_toupper.c \
-			ft_tolower.c \
-			ft_strmapi.c \
-			ft_striteri.c
+			ft_putnbr_fd.c
 
-OBJS	=	$(SRCS:.c=.o)
+OBJECTS := $(addprefix $(BUILDDIR)/, $(SOURCES:.c=.o))
+
+INCS := $(addprefix -I, $(HEADERDIR))
+
+DEPS := $(OBJECTS:.o=.d)
+
+vpath %.c $(SOURCEDIR)
+
+# **************************************************************************** #
+#    RULES
+# **************************************************************************** #
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	@$(AR) $(NAME) $(OBJS)
+$(NAME): $(OBJECTS)
+	@$(AR) $(NAME) $^
+	printf "$(V)$(B)Binary:$(T)$(Y) $(NAME) $(T)\n"
+
+re: fclean
+	make all
+
+# **************************************************************************** #
+#    BUILD
+# **************************************************************************** #
+
+define build_cmd
+$1/%.o: %.c | $(BUILDDIR)
+	if ! $(CC) $(CFLAGS) $(CPPFLAGS) $(INCS) $$< -o $$@ 2> $(BUILDLOG); then \
+		printf "$(R)$(B)\nError: \
+		$(V)Unable to create object file: \
+		$(R)$(B)$$@$(Y)\n\n"; \
+		sed '$$d' $(BUILDLOG); exit 1 ; \
+	else \
+		printf "$(C)$(B)Object: $(G)$$@ $(T)\n"; \
+	fi
+endef
+
+# **************************************************************************** #
+#    CLEAN
+# **************************************************************************** #
 
 clean:
-	$(RM) $(OBJS)
+	$(call delete_cmd, $(BUILDDIR), $(BUILDLOG))
 
 fclean: clean
-	$(RM) $(NAME)
+	$(call delete_cmd, $(NAME))
 
-re: fclean all
+define delete_cmd
+	printf "$(R)$(B)Delete:$(T)$(Y)$1$2$3$4$5$(T)\n"
+	$(RM) $1 $2 $3 $4 $5
+endef
 
-.PHONY: all clean fclean re
+# **************************************************************************** #
+#    COLORS
+# **************************************************************************** #
+
+T = \033[0m
+B = \033[1m
+G = \033[32m
+V = \033[35m
+C = \033[36m
+Y = \033[33m
+R = \033[31m
+
+# **************************************************************************** #
+#    UTILS
+# **************************************************************************** #
+
+-include $(DEPS)
+
+$(BUILDDIR):
+	mkdir -p $@
+
+$(foreach build, $(BUILDDIR), $(eval $(call build_cmd, $(build))))
+
+# **************************************************************************** #
+#    PHONY
+# **************************************************************************** #
+
+.PHONY: all re
+.PHONY: clean fclean
+
+.SILENT:
