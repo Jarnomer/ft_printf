@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Score-125%2F100-lightgreen?style=for-the-badge" alt="score">
+  <img src="https://img.shields.io/badge/Score-100%2F100-lightgreen?style=for-the-badge" alt="score">
   <img src="https://img.shields.io/github/languages/top/Jarnomer/ft_printf?style=for-the-badge&logo=c&label=%20&labelColor=gray&color=lightblue" alt="GitHub top language">
 	<img src="https://img.shields.io/github/languages/code-size/Jarnomer/ft_printf?style=for-the-badge&color=lightyellow" alt="GitHub code size in bytes">
   <img src="https://img.shields.io/github/directory-file-count/Jarnomer/ft_printf/sources?style=for-the-badge&label=sources&color=pink" alt="GitHub repo file or directory count (in path)">
@@ -61,7 +61,30 @@ cd ft_printf && make all
 
 ## ⚡ Usage
 
-Usage
+Build creates binary `libftprintf.a` into `root` directory and it should be `compiled` with your project.
+
+```c
+#include "./include/ft_printf.h"
+
+int main(void)
+{
+  int number = 42;
+  unsigned int hex = 255;
+  char *text = "Hello, world!";
+  void *ptr = &number;
+
+  ft_printf("Integer: %i\n", number);
+  ft_printf("Hexadecimal: %X\n", hex);
+  ft_printf("Pointer: %p\n", ptr);
+  ft_printf("String: %s\n", text);
+  ft_printf("Percent: %s\n", NULL);
+  return 0;
+}
+```
+
+```bash
+gcc main.c ft_printf.a -o ft_printf
+```
 
 ## 🚀 Details
 
