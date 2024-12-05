@@ -1,5 +1,5 @@
 <h1 align="center">
-  <b>ft_printf</b>
+  <img src="assets/ft_printf.png" alt="ft_printf" width="400">
 </h1>
 
 <p align="center">
