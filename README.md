@@ -134,8 +134,8 @@ void format_hex(t_print *output, unsigned long hex, char spec)
 
 ## 4️⃣2️⃣ Footer
 
-For my other 42 project and general information, please refer the [landing page](https://github.com/Jarnomer/Hive42).
+For my other 42 projects and general information, please refer the [Hive42 page](https://github.com/Jarnomer/Hive42).
 
-I have also created error handling [unit testers](https://github.com/Jarnomer/Hive42) for `pipex`, `so_long` and `cub3d`.
+I have also created error handling [unit testers](https://github.com/Jarnomer/42Testers) for `pipex`, `so_long` and `cub3d`.
 
 ### Cheers and good luck! 🥳
