@@ -136,6 +136,6 @@ void format_hex(t_print *output, unsigned long hex, char spec)
 
 For my other 42 projects and general information, please refer the [Hive42 page](https://github.com/Jarnomer/Hive42).
 
-I have also created `error handling` [unit testers](https://github.com/Jarnomer/42Testers) for `pipex`, `so_long` and `cub3D`.
+I have also created error handling [unit testers](https://github.com/Jarnomer/42Testers) for `pipex`, `so_long` and `cub3D`.
 
 ### Cheers and good luck! 🥳
