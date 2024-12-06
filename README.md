@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-	<b><i>Recreation of original printf, limited ft_edition.</i></b><br>
+	<b><i>Recreation of original printf, limited 4️⃣2️⃣ edition.</i></b><br>
 </p>
 
 <p align="center">
@@ -52,7 +52,7 @@ typedef struct s_print
 GNU `make`, `gcc` and `ar` are required to build, compile and archive the project.
 
 ```bash
-git clone https://github.com/Jarnomer/ft_printf.git ft_printf
+git clone https://github.com/Jarnomer/ft_printf.git
 ```
 
 ```bash
