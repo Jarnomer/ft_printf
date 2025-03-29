@@ -1,5 +1,6 @@
-.bonus
+*Tester*
 *build
+main.c
 *.vscode
 *.log
 *.pdf
