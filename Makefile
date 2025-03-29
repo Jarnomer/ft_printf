@@ -45,7 +45,11 @@ MAKEFLAGS += --no-print-directory -j4
 # **************************************************************************** #
 
 SOURCES   =	ft_printf.c \
-            ft_printf_fmt.c
+            ft_printf_fmt.c \
+			ft_printf_fmt2.c \
+			ft_printf_flg.c \
+			ft_printf_flg2.c
+
 
 OBJECTS := $(addprefix $(BUILDDIR)/, $(SOURCES:.c=.o))
 

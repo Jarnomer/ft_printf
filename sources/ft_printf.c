@@ -10,25 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ft_printf.h>
-
-static void	format_spec(t_print *output, va_list args, char spec)
-{
-	if (spec == '%')
-		format_chr(output, '%');
-	else if (spec == 'c')
-		format_chr(output, va_arg(args, int));
-	else if (spec == 's')
-		format_str(output, va_arg(args, char *));
-	else if (spec == 'i' || spec == 'd')
-		format_int(output, va_arg(args, int));
-	else if (spec == 'u')
-		format_int(output, va_arg(args, unsigned int));
-	else if (spec == 'x' || spec == 'X')
-		format_hex(output, va_arg(args, unsigned int), spec);
-	else if (spec == 'p')
-		format_hex(output, va_arg(args, unsigned long), spec);
-}
+#include "ft_printf.h"
 
 int	ft_printf(const char *format, ...)
 {
@@ -36,18 +18,22 @@ int	ft_printf(const char *format, ...)
 	va_list	args;
 
 	output.length = 0;
-	va_start (args, format);
+	va_start(args, format);
 	while (*format)
 	{
-		output.result = 0;
+		reset_flags(&output);
 		if (*format != '%')
 			format_chr(&output, *format);
-		else if (ft_strchr(SPECS, *(format + 1)))
-			format_spec(&output, args, *++format);
+		else if (*++format)
+		{
+			parse_flags(&output, &format);
+			if (ft_strchr(SPECS, *format))
+				format_spec(&output, args, *format);
+		}
 		if (output.length == -1 || !*format)
 			break ;
-		++format;
+		format++;
 	}
-	va_end (args);
+	va_end(args);
 	return (output.length);
 }
