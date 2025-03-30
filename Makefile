@@ -45,6 +45,7 @@ MAKEFLAGS += --no-print-directory -j4
 # **************************************************************************** #
 
 SOURCES = ft_printf.c \
+          ft_printf_chr.c \
           ft_printf_str.c \
           ft_printf_nbr.c \
           ft_printf_hex.c \

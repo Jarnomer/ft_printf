@@ -12,23 +12,6 @@
 
 #include <ft_printf.h>
 
-static void	calculate_pad(t_print *output)
-{
-	int	zero_padding;
-	int	total_length;
-
-	zero_padding = 0;
-	if (output->has_prec && output->precision > output->digit_count)
-		zero_padding = output->precision - output->digit_count;
-	total_length = zero_padding + output->digit_count + output->prefix_len;
-	if (output->width > total_length)
-		output->pad_len = output->width - total_length;
-	if (output->f_zero && !output->has_prec && !output->f_left)
-		output->pad_char = '0';
-	output->zero_pad = zero_padding;
-	output->total_len = total_length;
-}
-
 static void	justify_right(t_print *output)
 {
 	if (output->pad_char == '0' && output->prefix_len)

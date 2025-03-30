@@ -12,23 +12,6 @@
 
 #include <ft_printf.h>
 
-static void	calculate_pad(t_print *output)
-{
-	int	zero_padding;
-	int	total_length;
-
-	zero_padding = 0;
-	if (output->has_prec && output->precision > output->digit_count)
-		zero_padding = output->precision - output->digit_count;
-	total_length = zero_padding + output->digit_count + output->prefix_len;
-	if (output->width > total_length)
-		output->pad_len = output->width - total_length;
-	if (output->f_zero && !output->has_prec && !output->f_left)
-		output->pad_char = '0';
-	output->zero_pad = zero_padding;
-	output->total_len = total_length;
-}
-
 static void	justify_left(t_print *output)
 {
 	if (output->prefix_len > 0)
@@ -106,7 +89,7 @@ void	format_hex(t_print *output, unsigned long val, char spec)
 		return ;
 	}
 	parse_prefix(output, val, spec);
-    if (!(val == 0 && output->has_prec && output->precision == 0))
+	if (!(val == 0 && output->has_prec && output->precision == 0))
 	{
 		if (spec == 'X')
 			setup_string(output, val, HEXUPP);
