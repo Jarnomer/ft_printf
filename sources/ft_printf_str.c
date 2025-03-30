@@ -17,10 +17,10 @@ void	format_chr(t_print *output, int chr)
 	if (output->width > 1)
 	{
 		output->pad_len = output->width - 1;
-		if (output->f_zero && !output->f_minus)
+		if (output->f_zero && !output->f_left)
 			output->pad_char = '0';
 	}
-	if (output->f_minus)
+	if (output->f_left)
 	{
 		if (!print_char(output, chr))
 			return ;
@@ -50,7 +50,7 @@ void	format_str(t_print *output, char *str)
 	}
 	if (output->width > output->str_len)
 		output->pad_len = output->width - output->str_len;
-	if (output->f_minus)
+	if (output->f_left)
 	{
 		if (!print_str(output, str, output->str_len))
 			return ;

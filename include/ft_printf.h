@@ -28,11 +28,11 @@ typedef struct s_print
 	bool	error;
 	int		length;
 
-	int		f_minus;
-	int		f_zero;
-	int		f_hash;
-	int		f_plus;
-	int		f_space;
+	bool	f_left;
+	bool	f_zero;
+	bool	f_hash;
+	bool	f_plus;
+	bool	f_space;
 
 	int		width;
 	int		precision;
@@ -44,18 +44,9 @@ typedef struct s_print
 
 	char	digits[32];
 	int		digit_count;
-	bool	is_negative;
-	int		sign_offset;
 	char	sign_char;
-	bool	has_sign;
-	long	abs_val;
-
-
-
-
-	char	hex_chars[16];
-	char	hex_prefix[2];
 	int		prefix_len;
+	char	hex_prefix[2];
 
 	int		total_len;
 	int		str_len;
@@ -73,6 +64,5 @@ bool	print_char(t_print *output, char c);
 bool	print_chars(t_print *output, char c, int count);
 bool	print_str(t_print *output, const char *str, int len);
 bool	print_nbr(t_print *output);
-void	calc_pad(t_print *output);
 
 #endif

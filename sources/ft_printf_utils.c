@@ -60,20 +60,3 @@ bool	print_nbr(t_print *output)
 	}
 	return (true);
 }
-
-void	calc_pad(t_print *output)
-{
-	int	len;
-
-	len = 0;
-	if (output->has_prec && output->precision > output->digit_count)
-		output->zero_pad = output->precision - output->digit_count;
-	len = output->digit_count + output->zero_pad + output->has_sign;
-	output->total_len = len;
-	if (output->width > output->total_len)
-		output->pad_len = output->width - output->total_len;
-	if (output->f_zero && !output->has_prec && !output->f_minus)
-		output->pad_char = '0';
-	else
-		output->pad_char = ' ';
-}

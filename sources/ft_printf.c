@@ -48,7 +48,7 @@ static void	parse_flags(t_print *output, const char **format)
 	while (**format && ft_strchr(FLAGS, **format))
 	{
 		if (**format == '-')
-			output->f_minus = 1;
+			output->f_left = 1;
 		else if (**format == '0')
 			output->f_zero = 1;
 		else if (**format == '#')
@@ -60,7 +60,7 @@ static void	parse_flags(t_print *output, const char **format)
 		(*format)++;
 	}
 	calc_width_prec(output, format);
-	if (output->f_minus)
+	if (output->f_left)
 		output->f_zero = 0;
 	if (output->f_plus)
 		output->f_space = 0;

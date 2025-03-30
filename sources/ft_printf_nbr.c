@@ -12,17 +12,34 @@
 
 #include <ft_printf.h>
 
-static void	handle_right_justified(t_print *output)
+static void	calculate_pad(t_print *output)
 {
-	if (output->pad_char == '0' && output->has_sign)
+	int	zero_padding;
+	int	total_length;
+
+	zero_padding = 0;
+	if (output->has_prec && output->precision > output->digit_count)
+		zero_padding = output->precision - output->digit_count;
+	total_length = zero_padding + output->digit_count + output->prefix_len;
+	if (output->width > total_length)
+		output->pad_len = output->width - total_length;
+	if (output->f_zero && !output->has_prec && !output->f_left)
+		output->pad_char = '0';
+	output->zero_pad = zero_padding;
+	output->total_len = total_length;
+}
+
+static void	justify_right(t_print *output)
+{
+	if (output->pad_char == '0' && output->prefix_len)
 	{
 		if (!print_char(output, output->sign_char))
 			return ;
-		output->has_sign = 0;
+		output->prefix_len = 0;
 	}
 	if (!print_chars(output, output->pad_char, output->pad_len))
 		return ;
-	if (output->has_sign && !print_char(output, output->sign_char))
+	if (output->prefix_len && !print_char(output, output->sign_char))
 		return ;
 	if (!print_chars(output, '0', output->zero_pad))
 		return ;
@@ -30,9 +47,9 @@ static void	handle_right_justified(t_print *output)
 		return ;
 }
 
-static void	handle_left_justified(t_print *output)
+static void	justify_left(t_print *output)
 {
-	if (output->has_sign && !print_char(output, output->sign_char))
+	if (output->prefix_len && !print_char(output, output->sign_char))
 		return ;
 	if (!print_chars(output, '0', output->zero_pad))
 		return ;
@@ -42,50 +59,53 @@ static void	handle_left_justified(t_print *output)
 		return ;
 }
 
-static void	setup_nbr_str(t_print *output)
+static void	setup_string(t_print *output, long val)
 {
 	char	number;
 
-	while (output->abs_val > 0)
+	if (val == 0)
 	{
-		number = output->abs_val % 10 + '0';
-		output->digits[output->digit_count] = number;
-		output->abs_val /= 10;
+		output->digits[output->digit_count] = '0';
 		output->digit_count++;
+	}
+	else
+	{
+		while (val > 0)
+		{
+			number = val % 10 + '0';
+			output->digits[output->digit_count] = number;
+			val /= 10;
+			output->digit_count++;
+		}
 	}
 }
 
-static void	parse_sign(t_print *output)
+static void	parse_prefix(t_print *output, long val)
 {
-	if (output->is_negative)
+	if (val < 0)
 	{
 		output->sign_char = '-';
-		output->has_sign = 1;
+		output->prefix_len = 1;
 	}
 	else if (output->f_plus)
 	{
 		output->sign_char = '+';
-		output->has_sign = 1;
+		output->prefix_len = 1;
 	}
 	else if (output->f_space)
 	{
 		output->sign_char = ' ';
-		output->has_sign = 1;
+		output->prefix_len = 1;
 	}
 }
 
 void	format_nbr(t_print *output, long val)
 {
-	output->is_negative = (val < 0);
-	output->abs_val = ft_labs(val);
-	parse_sign(output);
-	if (output->abs_val == 0)
-		output->digits[output->digit_count++] = '0';
+	parse_prefix(output, val);
+	setup_string(output, ft_labs(val));
+	calculate_pad(output);
+	if (output->f_left)
+		justify_left(output);
 	else
-		setup_nbr_str(output);
-	calc_pad(output);
-	if (output->f_minus)
-		handle_left_justified(output);
-	else
-		handle_right_justified(output);
+		justify_right(output);
 }
