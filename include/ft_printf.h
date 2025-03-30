@@ -25,37 +25,41 @@
 
 typedef struct s_print
 {
-	bool			error;
-	int				length;
+	bool	error;
+	int		length;
 
-	int				f_minus;
-	int				f_zero;
-	int				f_hash;
-	int				f_plus;
-	int				f_space;
+	int		f_minus;
+	int		f_zero;
+	int		f_hash;
+	int		f_plus;
+	int		f_space;
 
-	int				width;
-	int				precision;
-	int				has_prec;
+	int		width;
+	int		precision;
+	bool	has_prec;
 
-	char			pad_char;
-	int				pad_len;
-	int				zero_pad;
-	int				is_negative;
-	int				sign_offset;
-	int				total_len;
-	int				str_len;
-	char			*temp;
+	int		zero_pad;
+	int		pad_len;
+	char	pad_char;
 
-	unsigned long	abs_val;
-	char			sign_char;
-	int				has_sign;
-	char			digits[32];
-	int				digit_count;
+	char	digits[32];
+	int		digit_count;
+	bool	is_negative;
+	int		sign_offset;
+	char	sign_char;
+	bool	has_sign;
+	long	abs_val;
 
-	char			hex_chars[16];
-	char			hex_prefix[2];
-	int				prefix_len;
+
+
+
+	char	hex_chars[16];
+	char	hex_prefix[2];
+	int		prefix_len;
+
+	int		total_len;
+	int		str_len;
+	char	*temp;
 }	t_print;
 
 int		ft_printf(const char *format, ...);
