@@ -61,7 +61,7 @@ bool	print_nbr(t_print *output)
 	return (true);
 }
 
-void	calculate_pad(t_print *output)
+void	setup_pad(t_print *output)
 {
 	int	zero_padding;
 	int	total_length;

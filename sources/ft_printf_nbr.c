@@ -85,8 +85,9 @@ static void	parse_prefix(t_print *output, long val)
 void	format_nbr(t_print *output, long val)
 {
 	parse_prefix(output, val);
-	setup_string(output, ft_labs(val));
-	calculate_pad(output);
+	if (!(val == 0 && output->has_prec && output->precision == 0))
+		setup_string(output, ft_labs(val));
+	setup_pad(output);
 	if (output->f_left)
 		justify_left(output);
 	else

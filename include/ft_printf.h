@@ -64,6 +64,6 @@ bool	print_char(t_print *output, char c);
 bool	print_chars(t_print *output, char c, int count);
 bool	print_str(t_print *output, const char *str, int len);
 bool	print_nbr(t_print *output);
-void	calculate_pad(t_print *output);
+void	setup_pad(t_print *output);
 
 #endif

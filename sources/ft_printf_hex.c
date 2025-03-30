@@ -96,7 +96,7 @@ void	format_hex(t_print *output, unsigned long val, char spec)
 		else
 			setup_string(output, val, HEXLOW);
 	}
-	calculate_pad(output);
+	setup_pad(output);
 	if (output->f_left)
 		justify_left(output);
 	else
