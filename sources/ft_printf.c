@@ -22,6 +22,27 @@ static void	reset_flags(t_print *output)
 	output->pad_char = ' ';
 }
 
+static void	calc_width_prec(t_print *output, const char **format)
+{
+	if (ft_isdigit(**format))
+	{
+		output->width = ft_atoi(*format);
+		while (ft_isdigit(**format))
+			(*format)++;
+	}
+	if (**format == '.')
+	{
+		output->has_prec = 1;
+		(*format)++;
+		if (ft_isdigit(**format))
+		{
+			output->precision = ft_atoi(*format);
+			while (ft_isdigit(**format))
+				(*format)++;
+		}
+	}
+}
+
 static void	parse_flags(t_print *output, const char **format)
 {
 	while (**format && ft_strchr(FLAGS, **format))
@@ -38,7 +59,7 @@ static void	parse_flags(t_print *output, const char **format)
 			output->f_space = 1;
 		(*format)++;
 	}
-	parse_width_prec(output, format);
+	calc_width_prec(output, format);
 	if (output->f_minus)
 		output->f_zero = 0;
 	if (output->f_plus)
@@ -54,9 +75,9 @@ static void	parse_specs(t_print *output, va_list args, char spec)
 	else if (spec == 's')
 		format_str(output, va_arg(args, char *));
 	else if (spec == 'i' || spec == 'd')
-		format_int(output, va_arg(args, int));
+		format_nbr(output, va_arg(args, int));
 	else if (spec == 'u')
-		format_int(output, va_arg(args, unsigned int));
+		format_nbr(output, va_arg(args, unsigned int));
 	else if (spec == 'x' || spec == 'X')
 		format_hex(output, va_arg(args, unsigned int), spec);
 	else if (spec == 'p')

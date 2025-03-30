@@ -16,6 +16,7 @@
 # include "../libft/include/libft.h"
 
 # include <stdarg.h>
+# include <stdbool.h>
 
 # define HEXLOW	"0123456789abcdef"
 # define HEXUPP	"0123456789ABCDEF"
@@ -24,6 +25,7 @@
 
 typedef struct s_print
 {
+	bool	error;
 	int		length;
 	int		result;
 
@@ -41,20 +43,19 @@ typedef struct s_print
 	int		pad_len;
 	int		is_negative;
 	int		sign_offset;
-	int		calc_len;
-
+	int		total_len;
+	int		str_len;
 	char	*temp;
-	long	abs_val;
+
+	unsigned long	abs_val;
+	char			sign_char;
+	int				has_sign;
 }	t_print;
 
 int		ft_printf(const char *format, ...);
 void	format_chr(t_print *output, int chr);
 void	format_str(t_print *output, char *str);
-void	format_int(t_print *output, long val);
+void	format_nbr(t_print *output, long val);
 void	format_hex(t_print *output, unsigned long hex, char spec);
-char	*handle_precision(t_print *output, char *str, long val, char spec);
-void	parse_width_prec(t_print *output, const char **format);
-void	apply_prefix(t_print *output, long val, char spec);
-void	apply_width(t_print *output, char *str);
 
 #endif
