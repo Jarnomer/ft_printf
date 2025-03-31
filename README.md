@@ -31,19 +31,40 @@
 
 ## 📝 General
 
-The goal of the project is to replicate limited functionality of original `printf`.
-
-It includes the modified `put_fd` functions from [libft](https://github.com/Jarnomer/libft) to keep track of written bytes.
+The goal of the project is to replicate the functionality of the original `printf` function with additional features.
 
 Project `passes` many of the 42 `testers`, including [franzinette](https://github.com/xicodomingues/francinette) `strict`.
 
-Struct is used to manage write results including `-1` in case of `error`.
+A comprehensive struct is used to manage formatting, flags, precision, width and write results including `-1` in case of `error`:
 
 ```c
 typedef struct s_print
 {
-	int result;
-	int length;
+	bool	error;
+	int		length;
+
+	bool	f_left;
+	bool	f_zero;
+	bool	f_hash;
+	bool	f_plus;
+	bool	f_space;
+
+	int		width;
+	int		precision;
+	bool	has_prec;
+
+	int		zero_pad;
+	int		pad_len;
+	char	pad_char;
+
+	char	digits[32];
+	int		digit_count;
+	char	sign_char;
+	int		prefix_len;
+	char	hex_prefix[2];
+
+	int		total_len;
+	int		str_len;
 }	t_print;
 ```
 
@@ -77,7 +98,16 @@ int main(void)
   ft_printf("Hexadecimal: %X\n", hex);
   ft_printf("Pointer: %p\n", ptr);
   ft_printf("String: %s\n", text);
-  ft_printf("Percent: %s\n", NULL);
+  ft_printf("Percent: %%\n");
+  
+  // With flags and formatting
+  ft_printf("Left-aligned: %-10s\n", text);
+  ft_printf("With precision: %.5s\n", text);
+  ft_printf("Zero-padded: %05d\n", number);
+  ft_printf("With sign: %+d\n", number);
+  ft_printf("With space: % d\n", number);
+  ft_printf("With hash: %#x\n", hex);
+  
   return 0;
 }
 ```
@@ -88,49 +118,66 @@ gcc main.c libftprintf.a -o ft_printf
 
 ## 🚀 Details
 
-Function utilizes `va_list` from standard library. Following `specifiers` are handled.
+The function utilizes `va_list` from the standard library. The following `specifiers` and `flags` are handled:
 
-| **Specifier** | **Description**                                                                 |
-|---------------|---------------------------------------------------------------------------------|
-| `%c`          | Prints a single character.                                                     |
-| `%s`          | Prints a string.                       |
-| `%p`          | Prints a pointer in hexadecimal format.                |
-| `%d`          | Prints a decimal number.                                             |
-| `%i`          | Prints an integer number.                                                  |
-| `%u`          | Prints an unsigned integer number.                                   |
-| `%x`          | Prints a hexadecimal number in lowercase.                     |
-| `%X`          | Prints a hexadecimal number in uppercase.                     |
-| `%%`          | Prints a percent sign.                                                        |
+| **Specifier** | **Description**                                                             |
+|---------------|-----------------------------------------------------------------------------|
+| `%c`          | Prints a single character.                                                  |
+| `%s`          | Prints a string (handles NULL strings with "(null)").                       |
+| `%p`          | Prints a pointer in hexadecimal format (shows "0x" prefix or "(nil)" for 0).|
+| `%d`          | Prints a decimal number.                                                    |
+| `%i`          | Prints an integer number.                                                   |
+| `%u`          | Prints an unsigned integer number.                                          |
+| `%x`          | Prints a hexadecimal number in lowercase.                                   |
+| `%X`          | Prints a hexadecimal number in uppercase.                                   |
+| `%%`          | Prints a percent sign.                                                      |
 
-Following utility `macros` are included in the header.
+| **Flag**      | **Description**                                                             |
+|---------------|-----------------------------------------------------------------------------|
+| `-`           | Left-aligns the result within the field width.                              |
+| `0`           | Pads numbers with leading zeros instead of spaces.                          |
+| `#`           | Adds "0x" or "0X" prefix to hexadecimal values when used with %x or %X.     |
+| ` ` (space)   | Adds a space before positive numbers.                                       |
+| `+`           | Forces displaying the sign for positive numbers.                            |
+
+The implementation also supports field width and precision:
+- Field width: `%10s` - Reserves 10 characters for the output
+- Precision: `%.5s` - Limits the output to 5 characters (for strings)
+- Combined: `%10.5s` - 10 character field with 5 character precision
+
+Following utility `macros` are included in the header:
 
 ```c
 # define HEXUPP "0123456789ABCDEF"
 # define HEXLOW "0123456789abcdef"
 # define SPECS  "cspdiuxX%"
+# define FLAGS  "-0# +"
 ```
 
-As an example, `recursive` implementation of hexadecimal printing.
+The project follows a modular design with separate files for each format type:
 
-```c
-void format_hex(t_print *output, unsigned long hex, char spec)
-{
-  if (hex >= 16)
-    format_hex(output, hex / 16, spec);
-  if (spec == 'p' && hex < 16)
-    format_str(output, "0x");
-  if (output->length == -1)
-    return ;
-  if (spec == 'x' || spec == 'p')
-    format_chr(output, HEXLOW[hex %= 16]);
-  else
-    format_chr(output, HEXUPP[hex %= 16]);
-}
-```
+- `ft_printf.c` - Main function and parsing
+- `ft_printf_chr.c` - Character formatting
+- `ft_printf_str.c` - String formatting
+- `ft_printf_nbr.c` - Integer number formatting
+- `ft_printf_hex.c` - Hexadecimal formatting
+- `ft_printf_utils.c` - Utility functions
+
+Each format function handles:
+
+1. Parsing any prefixes or special cases
+2. Setting up the string representation
+3. Calculating padding and alignment
+4. Handling justification (left or right)
+5. Writing to standard output
 
 ## ♻️ Resources
 
 [franzinette](https://github.com/xicodomingues/francinette) amazing unit test framework for `ft_printf` and other 42 projects.
+
+[printfTester](https://github.com/Tripouille/printfTester) baseline tester for mandatory and bonus, tests leaks.
+
+[ft_printf_test](https://github.com/cacharle/ft_printf_test) a very comprehensive tester, does not test leaks.
 
 ## 4️⃣2️⃣ Footer
 
