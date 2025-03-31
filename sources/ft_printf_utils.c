@@ -14,7 +14,7 @@
 
 bool	print_char(t_print *output, char c)
 {
-	if (ft_putchar_fd(c, 1) == -1)
+	if (write(1, &c, 1) == -1)
 	{
 		output->error = true;
 		output->length = -1;
