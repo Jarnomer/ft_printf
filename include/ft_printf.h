@@ -21,7 +21,7 @@
 # define HEXLOW	"0123456789abcdef"
 # define HEXUPP	"0123456789ABCDEF"
 # define SPECS	"cspdiuxX%"
-# define FLAGS	"-0.# +"
+# define FLAGS	"-0# +"
 
 typedef struct s_print
 {
@@ -50,7 +50,6 @@ typedef struct s_print
 
 	int		total_len;
 	int		str_len;
-	char	*temp;
 }	t_print;
 
 int		ft_printf(const char *format, ...);

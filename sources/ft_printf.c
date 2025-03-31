@@ -102,7 +102,6 @@ int	ft_printf(const char *format, ...)
 			if (ft_strchr(SPECS, *format))
 				parse_specs(&output, args, *format);
 		}
-		ft_free_single((void **)&output.temp);
 		if (output.length == -1 || !*format)
 			break ;
 		format++;
