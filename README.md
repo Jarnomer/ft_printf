@@ -106,7 +106,7 @@ The function utilizes `va_list` from the standard library. The following `specif
 | `-`           | Left-aligns the result within the field width.                              |
 | `0`           | Pads numbers with leading zeros instead of spaces.                          |
 | `#`           | Adds "0x" or "0X" prefix to hexadecimal format values.                      |
-| `' '`         | Adds a space before positive numbers.                                       |
+| ` `         | Adds a space before positive numbers.                                       |
 | `+`           | Forces displaying the sign for positive numbers.                            |
 
 | **Format**    | **Description**                                                             |
