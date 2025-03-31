@@ -166,6 +166,8 @@ Each format function handles:
 
 [ft_printf_test](https://github.com/cacharle/ft_printf_test) a very comprehensive tester, does not test leaks.
 
+[printfBetterTester](https://github.com/ejacquem/printfBetterTester/tree/main) the final boss.
+
 ## 4️⃣2️⃣ Footer
 
 For my other 42 projects and general information, please refer the [Hive42](https://github.com/Jarnomer/Hive42) page.
