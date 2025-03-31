@@ -35,39 +35,6 @@ The goal of the project is to replicate the functionality of the original `print
 
 Project `passes` many of the 42 `testers`, including [franzinette](https://github.com/xicodomingues/francinette) `strict`.
 
-A comprehensive struct is used to manage formatting, flags, precision, width and write results including `-1` in case of `error`:
-
-```c
-typedef struct s_print
-{
-	bool	error;
-	int		length;
-
-	bool	f_left;
-	bool	f_zero;
-	bool	f_hash;
-	bool	f_plus;
-	bool	f_space;
-
-	int		width;
-	int		precision;
-	bool	has_prec;
-
-	int		zero_pad;
-	int		pad_len;
-	char	pad_char;
-
-	char	digits[32];
-	int		digit_count;
-	char	sign_char;
-	int		prefix_len;
-	char	hex_prefix[2];
-
-	int		total_len;
-	int		str_len;
-}	t_print;
-```
-
 ## 🛠️ Build
 
 GNU `make`, `gcc` and `ar` are required to build, compile and archive the project.
@@ -123,8 +90,8 @@ The function utilizes `va_list` from the standard library. The following `specif
 | **Specifier** | **Description**                                                             |
 |---------------|-----------------------------------------------------------------------------|
 | `%c`          | Prints a single character.                                                  |
-| `%s`          | Prints a string (handles NULL strings with "(null)").                       |
-| `%p`          | Prints a pointer in hexadecimal format (shows "0x" prefix or "(nil)" for 0).|
+| `%s`          | Prints a string.                                                            |
+| `%p`          | Prints a pointer in hexadecimal format.                                     |
 | `%d`          | Prints a decimal number.                                                    |
 | `%i`          | Prints an integer number.                                                   |
 | `%u`          | Prints an unsigned integer number.                                          |
@@ -136,14 +103,20 @@ The function utilizes `va_list` from the standard library. The following `specif
 |---------------|-----------------------------------------------------------------------------|
 | `-`           | Left-aligns the result within the field width.                              |
 | `0`           | Pads numbers with leading zeros instead of spaces.                          |
-| `#`           | Adds "0x" or "0X" prefix to hexadecimal values when used with %x or %X.     |
-| ` ` (space)   | Adds a space before positive numbers.                                       |
+| `#`           | Adds "0x" or "0X" prefix to hexadecimal format values.                      |
+| `' '`         | Adds a space before positive numbers.                                       |
 | `+`           | Forces displaying the sign for positive numbers.                            |
 
-The implementation also supports field width and precision:
-- Field width: `%10s` - Reserves 10 characters for the output
-- Precision: `%.5s` - Limits the output to 5 characters (for strings)
-- Combined: `%10.5s` - 10 character field with 5 character precision
+| **Format**    | **Description**                                                             |
+|---------------|-----------------------------------------------------------------------------|
+| Width         | `%10s` - Reserves 10 characters for the output.                             |
+| Precision     | `%.5s` - For strings: Limits to 5 characters.                               |
+|               | `%.5d` - For integers: Ensures at least 5 digits (zero-padding).            |
+|               | `%.5x` - For hex: Ensures at least 5 digits (zero-padding).                 |
+|               | `%.0d` - With value 0: Prints nothing (suppresses zero value).              |
+| Combined      | `%10.5s` - 10 character field with 5 character precision.                   |
+| Special       | `%.*s` - Precision is specified as a parameter in the arguments list.       |
+|               | `%*s` - Width is specified as a parameter in the arguments list.            |
 
 Following utility `macros` are included in the header:
 
@@ -152,6 +125,18 @@ Following utility `macros` are included in the header:
 # define HEXLOW "0123456789abcdef"
 # define SPECS  "cspdiuxX%"
 # define FLAGS  "-0# +"
+```
+
+Struct manages formatting, flags, precision, width and write results including `-1` in case of `error`:
+
+```c
+typedef struct s_print
+{
+  bool error;
+  int  length;
+
+  ...
+} t_print;
 ```
 
 The project follows a modular design with separate files for each format type:
@@ -175,7 +160,7 @@ Each format function handles:
 
 [franzinette](https://github.com/xicodomingues/francinette) amazing unit test framework for `ft_printf` and other 42 projects.
 
-[printfTester](https://github.com/Tripouille/printfTester) baseline tester for mandatory and bonus, tests leaks.
+[printfTester](https://github.com/Tripouille/printfTester) excellent baseline tester for mandatory and bonus, tests leaks.
 
 [ft_printf_test](https://github.com/cacharle/ft_printf_test) a very comprehensive tester, does not test leaks.
 
