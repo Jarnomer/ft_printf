@@ -134,9 +134,16 @@ Struct manages formatting, flags, precision, width and write results including `
 ```c
 typedef struct s_print
 {
-  bool error;
   int  length;
 
+  bool f_left;
+  ...
+
+  int  width;
+  ...
+
+  char digits[32];
+  int  digit_count;
   ...
 } t_print;
 ```
@@ -166,7 +173,7 @@ Each format function handles:
 
 [ft_printf_test](https://github.com/cacharle/ft_printf_test) a very comprehensive tester, does not test leaks.
 
-[printfBetterTester](https://github.com/ejacquem/printfBetterTester/tree/main) the final boss.
+[printfBetterTester](https://github.com/ejacquem/printfBetterTester/tree/main) the final boss with a `lot` of tests.
 
 ## 4️⃣2️⃣ Footer
 

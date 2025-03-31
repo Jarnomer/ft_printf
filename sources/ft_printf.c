@@ -76,7 +76,7 @@ static void	parse_flags(t_print *output, const char **format)
 		output->f_space = 0;
 }
 
-static void	reset_flags(t_print *output)
+static inline void	reset_flags(t_print *output)
 {
 	int	len;
 
