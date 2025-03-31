@@ -28,14 +28,19 @@ static void	justify_left(t_print *output, char *str)
 		return ;
 }
 
-static void	parse_prefix(t_print *output)
+static void	parse_prefix(t_print *output, char **str)
 {
 	if (output->has_prec)
 	{
 		if (output->precision == 0)
 			output->str_len = 0;
-		else if (output->precision < output->str_len)
-			output->str_len = output->precision;
+		else if (!output->precision || output->precision < output->str_len)
+		{
+			if (!ft_strcmp(*str, "(null)") && output->precision < 6)
+				output->str_len = 0;
+			else
+				output->str_len = output->precision;
+		}
 	}
 }
 
@@ -44,7 +49,7 @@ void	format_str(t_print *output, char *str)
 	if (!str)
 		str = "(null)";
 	output->str_len = ft_strlen(str);
-	parse_prefix(output);
+	parse_prefix(output, &str);
 	if (output->width > output->str_len)
 		output->pad_len = output->width - output->str_len;
 	if (output->f_left)

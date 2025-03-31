@@ -69,6 +69,8 @@ static void	parse_flags(t_print *output, const char **format)
 static void	parse_specs(t_print *output, va_list args, char spec)
 {
 	if (spec == '%')
+		print_char(output, '%');
+	else if (spec == '%')
 		format_chr(output, '%');
 	else if (spec == 'c')
 		format_chr(output, va_arg(args, int));

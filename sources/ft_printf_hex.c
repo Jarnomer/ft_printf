@@ -83,9 +83,14 @@ static void	parse_prefix(t_print *output, unsigned long val, char spec)
 
 void	format_hex(t_print *output, unsigned long val, char spec)
 {
+	bool	has_prec;
+
 	if (spec == 'p' && val == 0)
 	{
+		has_prec = output->has_prec;
+		output->has_prec = false;
 		format_str(output, "(nil)");
+		output->has_prec = has_prec;
 		return ;
 	}
 	parse_prefix(output, val, spec);
