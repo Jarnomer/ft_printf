@@ -12,37 +12,37 @@
 
 #include <ft_printf.h>
 
-static void	justify_right(t_print *output)
+static inline void	justify_right(t_print *output)
 {
 	if (output->pad_char == '0' && output->prefix_len)
 	{
-		if (!print_char(output, output->sign_char))
+		if (print_char(output, output->sign_char) == -1)
 			return ;
 		output->prefix_len = 0;
 	}
-	if (!print_chars(output, output->pad_char, output->pad_len))
+	if (print_chars(output, output->pad_char, output->pad_len) == -1)
 		return ;
-	if (output->prefix_len && !print_char(output, output->sign_char))
+	if (output->prefix_len)
+		if (print_char(output, output->sign_char) == -1)
+			return ;
+	if (print_chars(output, '0', output->zero_pad) == -1)
 		return ;
-	if (!print_chars(output, '0', output->zero_pad))
-		return ;
-	if (!print_nbr(output))
-		return ;
+	print_nbr(output);
 }
 
-static void	justify_left(t_print *output)
+static inline void	justify_left(t_print *output)
 {
-	if (output->prefix_len && !print_char(output, output->sign_char))
+	if (output->prefix_len)
+		if (print_char(output, output->sign_char) == -1)
+			return ;
+	if (print_chars(output, '0', output->zero_pad) == -1)
 		return ;
-	if (!print_chars(output, '0', output->zero_pad))
+	if (print_nbr(output) == -1)
 		return ;
-	if (!print_nbr(output))
-		return ;
-	if (!print_chars(output, ' ', output->pad_len))
-		return ;
+	print_chars(output, ' ', output->pad_len);
 }
 
-static void	setup_string(t_print *output, long val)
+static inline void	setup_string(t_print *output, long val)
 {
 	char	number;
 
@@ -57,13 +57,13 @@ static void	setup_string(t_print *output, long val)
 		{
 			number = val % 10 + '0';
 			output->digits[output->digit_count] = number;
-			val /= 10;
 			output->digit_count++;
+			val /= 10;
 		}
 	}
 }
 
-static void	parse_prefix(t_print *output, long val)
+static inline void	parse_prefix(t_print *output, long val)
 {
 	if (val < 0)
 	{
@@ -87,7 +87,7 @@ void	format_nbr(t_print *output, long val)
 	parse_prefix(output, val);
 	if (!(val == 0 && output->has_prec && output->precision == 0))
 		setup_string(output, ft_labs(val));
-	setup_pad(output);
+	setup_hex_nbr_pad(output);
 	if (output->f_left)
 		justify_left(output);
 	else

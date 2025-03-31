@@ -12,39 +12,37 @@
 
 #include <ft_printf.h>
 
-static void	justify_left(t_print *output)
+static inline void	justify_left(t_print *output)
 {
 	if (output->prefix_len > 0)
-		if (!print_str(output, output->hex_prefix, output->prefix_len))
+		if (print_str(output, output->hex_prefix, output->prefix_len) == -1)
 			return ;
-	if (!print_chars(output, '0', output->zero_pad))
+	if (print_chars(output, '0', output->zero_pad) == -1)
 		return ;
-	if (!print_nbr(output))
+	if (print_nbr(output) == -1)
 		return ;
-	if (!print_chars(output, ' ', output->pad_len))
-		return ;
+	print_chars(output, ' ', output->pad_len);
 }
 
-static void	justify_right(t_print *output)
+static inline void	justify_right(t_print *output)
 {
 	if (output->pad_char == '0' && output->prefix_len > 0)
 	{
-		if (!print_str(output, output->hex_prefix, output->prefix_len))
+		if (print_str(output, output->hex_prefix, output->prefix_len) == -1)
 			return ;
 		output->prefix_len = 0;
 	}
-	if (!print_chars(output, output->pad_char, output->pad_len))
+	if (print_chars(output, output->pad_char, output->pad_len) == -1)
 		return ;
 	if (output->prefix_len > 0)
-		if (!print_str(output, output->hex_prefix, output->prefix_len))
+		if (print_str(output, output->hex_prefix, output->prefix_len) == -1)
 			return ;
-	if (!print_chars(output, '0', output->zero_pad))
+	if (print_chars(output, '0', output->zero_pad) == -1)
 		return ;
-	if (!print_nbr(output))
-		return ;
+	print_nbr(output);
 }
 
-static void	setup_string(t_print *output, unsigned long val, char *hex_set)
+static inline void	setup_string(t_print *output, unsigned long val, char *set)
 {
 	char	number;
 
@@ -57,15 +55,15 @@ static void	setup_string(t_print *output, unsigned long val, char *hex_set)
 	{
 		while (val > 0)
 		{
-			number = hex_set[val % 16];
+			number = set[val % 16];
 			output->digits[output->digit_count] = number;
-			val /= 16;
 			output->digit_count++;
+			val /= 16;
 		}
 	}
 }
 
-static void	parse_prefix(t_print *output, unsigned long val, char spec)
+static inline void	parse_prefix(t_print *output, unsigned long val, char spec)
 {
 	if (spec == 'p')
 	{
@@ -101,7 +99,7 @@ void	format_hex(t_print *output, unsigned long val, char spec)
 		else
 			setup_string(output, val, HEXLOW);
 	}
-	setup_pad(output);
+	setup_hex_nbr_pad(output);
 	if (output->f_left)
 		justify_left(output);
 	else

@@ -12,48 +12,49 @@
 
 #include <ft_printf.h>
 
-static void	justify_right(t_print *output, char *str)
+static inline void	justify_right(t_print *output, char *str, int len)
 {
-	if (!print_chars(output, output->pad_char, output->pad_len))
+	if (print_chars(output, output->pad_char, output->pad_len) == -1)
 		return ;
-	if (!print_str(output, str, output->str_len))
-		return ;
+	print_str(output, str, len);
 }
 
-static void	justify_left(t_print *output, char *str)
+static inline void	justify_left(t_print *output, char *str, int len)
 {
-	if (!print_str(output, str, output->str_len))
+	if (print_str(output, str, len) == -1)
 		return ;
-	if (!print_chars(output, output->pad_char, output->pad_len))
-		return ;
+	print_chars(output, output->pad_char, output->pad_len);
 }
 
-static void	parse_prefix(t_print *output, char **str)
+static inline int	parse_prefix(t_print *output, char *str, int len)
 {
 	if (output->has_prec)
 	{
 		if (output->precision == 0)
-			output->str_len = 0;
-		else if (!output->precision || output->precision < output->str_len)
+			return (0);
+		else if (!output->precision || output->precision < len)
 		{
-			if (!ft_strcmp(*str, "(null)") && output->precision < 6)
-				output->str_len = 0;
+			if (!ft_strcmp(str, "(null)") && output->precision < 6)
+				return (0);
 			else
-				output->str_len = output->precision;
+				return (output->precision);
 		}
 	}
+	return (len);
 }
 
 void	format_str(t_print *output, char *str)
 {
+	int	len;
+
 	if (!str)
 		str = "(null)";
-	output->str_len = ft_strlen(str);
-	parse_prefix(output, &str);
-	if (output->width > output->str_len)
-		output->pad_len = output->width - output->str_len;
+	len = ft_strlen(str);
+	len = parse_prefix(output, str, len);
+	if (output->width > len)
+		output->pad_len = output->width - len;
 	if (output->f_left)
-		justify_left(output, str);
+		justify_left(output, str, len);
 	else
-		justify_right(output, str);
+		justify_right(output, str, len);
 }

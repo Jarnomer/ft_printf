@@ -12,56 +12,55 @@
 
 #include <ft_printf.h>
 
-bool	print_char(t_print *output, char c)
+int	print_char(t_print *output, char c)
 {
 	if (write(1, &c, 1) == -1)
 	{
-		output->error = true;
 		output->length = -1;
-		return (false);
+		return (-1);
 	}
 	output->length += 1;
-	return (true);
+	return (0);
 }
 
-bool	print_chars(t_print *output, char c, int count)
+int	print_chars(t_print *output, char c, int count)
 {
 	while (count-- > 0)
 	{
-		if (!print_char(output, c))
-			return (false);
+		if (print_char(output, c) == -1)
+			return (-1);
 	}
-	return (true);
+	return (0);
 }
 
-bool	print_str(t_print *output, const char *str, int len)
+int	print_str(t_print *output, const char *str, int len)
 {
 	int	i;
 
 	i = 0;
 	while (i < len)
 	{
-		if (!print_char(output, str[i]))
-			return (false);
+		if (print_char(output, str[i]) == -1)
+			return (-1);
 		i++;
 	}
-	return (true);
+	return (0);
 }
 
-bool	print_nbr(t_print *output)
+int	print_nbr(t_print *output)
 {
 	int	i;
 
 	i = output->digit_count;
 	while (--i >= 0)
 	{
-		if (!print_char(output, output->digits[i]))
-			return (false);
+		if (print_char(output, output->digits[i]) == -1)
+			return (-1);
 	}
-	return (true);
+	return (0);
 }
 
-void	setup_pad(t_print *output)
+void	setup_hex_nbr_pad(t_print *output)
 {
 	int	zero_padding;
 	int	total_length;
@@ -75,5 +74,4 @@ void	setup_pad(t_print *output)
 	if (output->f_zero && !output->has_prec && !output->f_left)
 		output->pad_char = '0';
 	output->zero_pad = zero_padding;
-	output->total_len = total_length;
 }

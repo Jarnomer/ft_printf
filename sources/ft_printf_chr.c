@@ -12,20 +12,18 @@
 
 #include <ft_printf.h>
 
-static void	justify_right(t_print *output, int chr)
+static inline void	justify_right(t_print *output, int chr)
 {
-	if (!print_chars(output, output->pad_char, output->pad_len))
+	if (print_chars(output, output->pad_char, output->pad_len) == -1)
 		return ;
-	if (!print_char(output, chr))
-		return ;
+	print_char(output, chr);
 }
 
-static void	justify_left(t_print *output, int chr)
+static inline void	justify_left(t_print *output, int chr)
 {
-	if (!print_char(output, chr))
+	if (print_char(output, chr) == -1)
 		return ;
-	if (!print_chars(output, output->pad_char, output->pad_len))
-		return ;
+	print_chars(output, output->pad_char, output->pad_len);
 }
 
 void	format_chr(t_print *output, int chr)

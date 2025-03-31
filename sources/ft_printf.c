@@ -12,14 +12,24 @@
 
 #include <ft_printf.h>
 
-static void	reset_flags(t_print *output)
+static void	parse_specs(t_print *output, va_list args, char spec)
 {
-	int	len;
-
-	len = output->length;
-	ft_bzero(output, sizeof(t_print));
-	output->length = len;
-	output->pad_char = ' ';
+	if (spec == '%')
+		print_char(output, '%');
+	else if (spec == '%')
+		format_chr(output, '%');
+	else if (spec == 'c')
+		format_chr(output, va_arg(args, int));
+	else if (spec == 's')
+		format_str(output, va_arg(args, char *));
+	else if (spec == 'i' || spec == 'd')
+		format_nbr(output, va_arg(args, int));
+	else if (spec == 'u')
+		format_nbr(output, va_arg(args, unsigned int));
+	else if (spec == 'x' || spec == 'X')
+		format_hex(output, va_arg(args, unsigned int), spec);
+	else if (spec == 'p')
+		format_hex(output, va_arg(args, unsigned long), spec);
 }
 
 static void	calc_width_prec(t_print *output, const char **format)
@@ -66,24 +76,14 @@ static void	parse_flags(t_print *output, const char **format)
 		output->f_space = 0;
 }
 
-static void	parse_specs(t_print *output, va_list args, char spec)
+static void	reset_flags(t_print *output)
 {
-	if (spec == '%')
-		print_char(output, '%');
-	else if (spec == '%')
-		format_chr(output, '%');
-	else if (spec == 'c')
-		format_chr(output, va_arg(args, int));
-	else if (spec == 's')
-		format_str(output, va_arg(args, char *));
-	else if (spec == 'i' || spec == 'd')
-		format_nbr(output, va_arg(args, int));
-	else if (spec == 'u')
-		format_nbr(output, va_arg(args, unsigned int));
-	else if (spec == 'x' || spec == 'X')
-		format_hex(output, va_arg(args, unsigned int), spec);
-	else if (spec == 'p')
-		format_hex(output, va_arg(args, unsigned long), spec);
+	int	len;
+
+	len = output->length;
+	ft_bzero(output, sizeof(t_print));
+	output->length = len;
+	output->pad_char = ' ';
 }
 
 int	ft_printf(const char *format, ...)

@@ -25,7 +25,6 @@
 
 typedef struct s_print
 {
-	bool	error;
 	int		length;
 
 	bool	f_left;
@@ -37,19 +36,15 @@ typedef struct s_print
 	int		width;
 	int		precision;
 	bool	has_prec;
-
-	int		zero_pad;
 	int		pad_len;
 	char	pad_char;
 
 	char	digits[32];
 	int		digit_count;
+	int		zero_pad;
 	char	sign_char;
 	int		prefix_len;
 	char	hex_prefix[2];
-
-	int		total_len;
-	int		str_len;
 }	t_print;
 
 int		ft_printf(const char *format, ...);
@@ -59,10 +54,10 @@ void	format_str(t_print *output, char *str);
 void	format_nbr(t_print *output, long val);
 void	format_hex(t_print *output, unsigned long hex, char spec);
 
-bool	print_char(t_print *output, char c);
-bool	print_chars(t_print *output, char c, int count);
-bool	print_str(t_print *output, const char *str, int len);
-bool	print_nbr(t_print *output);
-void	setup_pad(t_print *output);
+int		print_char(t_print *output, char c);
+int		print_chars(t_print *output, char c, int count);
+int		print_str(t_print *output, const char *str, int len);
+int		print_nbr(t_print *output);
+void	setup_hex_nbr_pad(t_print *output);
 
 #endif
