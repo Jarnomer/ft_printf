@@ -31,9 +31,11 @@
 
 ## 📝 General
 
-The goal of the project is to replicate the functionality of the original `printf` function with additional features.
+The goal of the project is to replicate the functionality of the original `printf` function with limited features.
 
 Project `passes` many of the 42 `testers`, including [franzinette](https://github.com/xicodomingues/francinette) `strict`.
+
+Only the functions necessary for the project are included within `libft`.
 
 ## 🛠️ Build
 
