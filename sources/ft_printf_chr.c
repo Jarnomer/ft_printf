@@ -28,19 +28,10 @@ static void	justify_left(t_print *output, int chr)
 		return ;
 }
 
-static void	parse_prefix(t_print *output)
-{
-	if (output->width > 1)
-	{
-		output->pad_len = output->width - 1;
-		if (output->f_zero && !output->f_left)
-			output->pad_char = '0';
-	}
-}
-
 void	format_chr(t_print *output, int chr)
 {
-	parse_prefix(output);
+	if (output->width > 1)
+		output->pad_len = output->width - 1;
 	if (output->f_left)
 		justify_left(output, chr);
 	else
