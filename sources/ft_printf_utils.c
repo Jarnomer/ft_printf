@@ -28,7 +28,10 @@ int	print_chars(t_print *output, char c, int count)
 	while (count-- > 0)
 	{
 		if (print_char(output, c) == -1)
-			return (-1);
+		{
+      output->length = -1;
+      return (-1);
+    }
 	}
 	return (0);
 }
@@ -41,7 +44,10 @@ int	print_str(t_print *output, const char *str, int len)
 	while (i < len)
 	{
 		if (print_char(output, str[i]) == -1)
-			return (-1);
+		{
+      output->length = -1;
+      return (-1);
+    }
 		i++;
 	}
 	return (0);
@@ -55,7 +61,10 @@ int	print_nbr(t_print *output)
 	while (--i >= 0)
 	{
 		if (print_char(output, output->digits[i]) == -1)
-			return (-1);
+		{
+      output->length = -1;
+      return (-1);
+    }
 	}
 	return (0);
 }
