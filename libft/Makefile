@@ -41,14 +41,14 @@ MAKEFLAGS += --no-print-directory -j4
 #    SOURCES
 # **************************************************************************** #
 
-SOURCES := ft_isdigit.c \
-           ft_strlen.c \
-           ft_strchr.c \
-           ft_strcmp.c \
-           ft_memset.c \
-           ft_bzero.c \
-           ft_atoi.c \
-           ft_labs.c
+SOURCES := ft_isdigit \
+           ft_strlen \
+           ft_strchr \
+           ft_strcmp \
+           ft_atoi \
+           ft_labs
+
+SOURCES := $(addsuffix .c, $(SOURCES))
 
 OBJECTS := $(addprefix $(BUILDDIR)/, $(SOURCES:.c=.o))
 
@@ -72,10 +72,11 @@ re: fclean
 	make all
 
 nm:
-	$(foreach d, $(HEADERDIR), $(foreach h, $(wildcard $(d)/*), \
-		norminette -R CheckDefine $(h);))
-	$(foreach d, $(SOURCEDIR), $(foreach s, $(wildcard $(d)/*), \
-		norminette -R CheckForbiddenSourceHeader $(s);))
+ifneq ($(shell command -v norminette >/dev/null 2>&1 && echo 1 || echo 0), 1)
+	@printf "$(R)$(B)Error: norminette: $(Y)command not found$(T)\n"; exit 1
+endif
+	$(foreach h, $(HEADERDIR), norminette -R CheckDefine $(h))
+	$(foreach s, $(SOURCEDIR), norminette -R CheckForbiddenSourceHeader $(s))
 
 # **************************************************************************** #
 #    BUILD
